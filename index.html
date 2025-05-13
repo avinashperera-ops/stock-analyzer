@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Analyzer</title>
+</head>
+<body>
+  <h1>Stock Analyzer</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv">
+    <button type="submit">Upload CSV</button>
+  </form>
+  <form id="tickerForm">
+    <input type="text" id="ticker" placeholder="Enter stock ticker">
+    <button type="submit">Get Stock Data</button>
+  </form>
+  <div id="chart"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      console.log(data);
+      // Process and display the data
+    });
+
+    document.getElementById('tickerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const ticker = document.getElementById('ticker').value;
+      const response = await fetch(`/stock/${ticker}`);
+      const data = await response.json();
+      console.log(data);
+      // Process and display the data
+    });
+  </script>
+</body>
+</html>
